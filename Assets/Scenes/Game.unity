@@ -625,6 +625,7 @@ MonoBehaviour:
   aiManager: {fileID: 179582036}
   winScreen: {fileID: 167038246}
   loseScreen: {fileID: 120254265}
+  joystickObj: {fileID: 1885139405}
 --- !u!4 &179582038
 Transform:
   m_ObjectHideFlags: 0
@@ -2123,7 +2124,7 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 8170153791668043265, guid: 0d230cc8be529a542a08cb878ab14b18, type: 3}
   m_PrefabInstance: {fileID: 1885139404}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 1885139405}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7a47f546fc70ec8428172694e78e4288, type: 3}
@@ -3347,6 +3348,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0d230cc8be529a542a08cb878ab14b18, type: 3}
+--- !u!1 &1885139405 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8170153791668043269, guid: 0d230cc8be529a542a08cb878ab14b18, type: 3}
+  m_PrefabInstance: {fileID: 1885139404}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1918964923
 PrefabInstance:
   m_ObjectHideFlags: 0

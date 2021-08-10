@@ -15,6 +15,8 @@ namespace BulletRushGame
 
         public GameObject winScreen;
         public GameObject loseScreen;
+        public GameObject joystickObj;
+
 
 
         private void Start()
@@ -50,6 +52,11 @@ namespace BulletRushGame
             {
                 winScreen.gameObject.SetActive(true);
             }
+
+            if (joystickObj)
+            {
+                joystickObj.gameObject.SetActive(false);
+            }
         }
         public void OpenLoseScreen()
         {
@@ -58,6 +65,11 @@ namespace BulletRushGame
             if (loseScreen)
             {
                 loseScreen.gameObject.SetActive(true);
+            }
+
+            if (joystickObj)
+            {
+                joystickObj.gameObject.SetActive(false);
             }
         }
 
