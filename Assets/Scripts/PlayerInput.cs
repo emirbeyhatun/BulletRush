@@ -2,23 +2,26 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerInput 
+namespace BulletRushGame
 {
-    private Rigidbody rb;
-    private Camera cam;
-
-    public PlayerInput(Rigidbody rb,  Camera cam)
+    public class PlayerInput
     {
-        this.rb = rb;
-        this.cam = cam;
-    }
+        private Rigidbody rb;
+        private Camera cam;
 
-    public void MovementInputs(float speed, Vector3 joystickDir)
-    {
-        if (rb  && cam)
+        public PlayerInput(Rigidbody rb, Camera cam)
         {
-            Vector3 movementDirection = Quaternion.Euler(0, cam.transform.localRotation.eulerAngles.y, 0) * (new Vector3(joystickDir.x, 0, joystickDir.y));
-            rb.velocity = movementDirection * speed;
+            this.rb = rb;
+            this.cam = cam;
+        }
+
+        public void MovementInputs(float speed, Vector2 joystickDir)
+        {
+            if (rb && cam)
+            {
+                Vector3 movementDirection = Quaternion.Euler(0, cam.transform.localRotation.eulerAngles.y, 0) * new Vector3(joystickDir.x, 0, joystickDir.y);
+                rb.velocity = movementDirection * speed;
+            }
         }
     }
 }

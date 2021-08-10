@@ -6,7 +6,7 @@ namespace BulletRushGame
 {
     public interface IDamagable
     {
-        bool TakeDamage(int damage);
+        bool TakeDamage(int damage, out bool isDead);
         bool IsDead();
         event System.Action OnDeath;
     }

@@ -10,17 +10,18 @@ namespace BulletRushGame
     public class EnemyStats
     {
         public int hp = 100;
-        public int speed = 100;
-        public int damage = 20;
+        public int damage = 100;
         public bool isDead = false;
     }
-    public class EnemyBase : MonoBehaviour, IDamagable
+    public class Enemy : MonoBehaviour, IDamagable
     {
         private NavMeshAgent navmeshAgent;
+        private bool startFollowing = false;
+        private Transform targetToMove;
         [SerializeField]private EnemyStats stats;
-        [SerializeField]private Transform targetToMove;
 
         public event Action OnDeath;
+
 
         private void Awake()
         {
@@ -32,25 +33,29 @@ namespace BulletRushGame
             
         }
 
-        // Update is called once per frame
+
+        public void StartAttacking()
+        {
+            startFollowing = true;
+        }
+
         public virtual void Update()
         {
-            if (Input.GetKeyDown(KeyCode.S))
+            if (startFollowing && targetToMove && navmeshAgent)
             {
-                if (targetToMove && navmeshAgent)
-                {
-                    print(navmeshAgent.SetDestination(targetToMove.position));
-                }
+                navmeshAgent.SetDestination(targetToMove.position);
             }
         }
+        
 
         public void SetStats(EnemyStats stats)
         {
             this.stats = stats;
         }
 
-        public bool TakeDamage(int damage)
+        public bool TakeDamage(int damage, out bool isDead)
         {
+            isDead = false;
             if (stats == null) return false;
             if (stats.isDead == true) return false;
 
@@ -59,13 +64,20 @@ namespace BulletRushGame
             if (stats.hp == 0)
             {
                 stats.isDead = true;
+                isDead = true; 
+
                 OnDeath?.Invoke();
 
                 gameObject.SetActive(false);
-                Destroy(gameObject, 1);
+                Destroy(gameObject, 5);
             }
 
             return true;
+        }
+
+        internal void SetTarget(Transform target)
+        {
+            targetToMove = target;
         }
 
         public virtual void OnTriggerEnter(Collider other)
@@ -76,7 +88,8 @@ namespace BulletRushGame
                 IDamagable damagable = player;
                 if (damagable != null && stats != null)
                 {
-                    damagable.TakeDamage(stats.damage);
+                    bool isDead;
+                    damagable.TakeDamage(stats.damage, out isDead);
                 }
             }
         }

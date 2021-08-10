@@ -6,11 +6,11 @@ namespace BulletRushGame
 {
     public class TargetFinder : MonoBehaviour
     {
-        private Dictionary<int, EnemyBase> enemiesInRange = new Dictionary<int, EnemyBase>();
-        private EnemyBase currentTarget;
+        private Dictionary<int, Enemy> enemiesInRange = new Dictionary<int, Enemy>();
+        private Enemy currentTarget;
         private void OnTriggerEnter(Collider other)
         {
-            EnemyBase enemy = other.GetComponent<EnemyBase>();
+            Enemy enemy = other.GetComponent<Enemy>();
 
             if (enemy && enemiesInRange != null)
             {
@@ -22,9 +22,17 @@ namespace BulletRushGame
             }
         }
 
+        private void Update()
+        {
+            if(currentTarget == null)
+            {
+                CalculateCurrentTarget();
+            }
+        }
+
         private void OnTriggerExit(Collider other)
         {
-            EnemyBase enemy = other.GetComponent<EnemyBase>();
+            Enemy enemy = other.GetComponent<Enemy>();
 
             if (enemy && enemiesInRange != null)
             {
@@ -36,14 +44,19 @@ namespace BulletRushGame
             }
         }
 
-        public void RemoveEnemyIfDead(EnemyBase enemy)
+        public void RemoveEnemyIfDead(Enemy enemy)
         {
             if(enemiesInRange != null && enemy.IsDead())
             {
-                int instanceID = enemy.GetInstanceID();
+                int instanceID = enemy.gameObject.GetInstanceID();
                 if (enemiesInRange.ContainsKey(instanceID))
                 {
                     enemiesInRange.Remove(instanceID);
+                }
+
+                if(currentTarget == enemy)
+                {
+                    currentTarget = null;
                 }
             }
         }
@@ -57,15 +70,15 @@ namespace BulletRushGame
         {
             if (enemiesInRange == null) return;
 
-            EnemyBase closest = null;
+            Enemy closest = null;
 
-            foreach (KeyValuePair<int, EnemyBase> pair in enemiesInRange)
+            foreach (KeyValuePair<int, Enemy> pair in enemiesInRange)
             {
                 if(closest == null && pair.Value)
                 {
                     closest = pair.Value;
                 }
-                else
+                else if(closest)
                 {
                     if(Vector3.Distance(closest.transform.position, transform.position) > Vector3.Distance(pair.Value.transform.position, transform.position))
                     {
@@ -77,7 +90,7 @@ namespace BulletRushGame
             currentTarget = closest;
         }
 
-        public EnemyBase GetTarget()
+        public Enemy GetTarget()
         {
             return currentTarget;
         }

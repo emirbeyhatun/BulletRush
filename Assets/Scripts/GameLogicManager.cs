@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace BulletRushGame
 {
@@ -11,7 +12,10 @@ namespace BulletRushGame
         [SerializeField] private Player player;
         [SerializeField] private AiManager aiManager;
 
-        public bool IsGameStarted { get; private set; } = false;
+
+        public GameObject winScreen;
+        public GameObject loseScreen;
+
 
         private void Start()
         {
@@ -19,7 +23,6 @@ namespace BulletRushGame
         }
         public void StartGame()
         {
-            IsGameStarted = true;
 
             if (player)
             {
@@ -28,13 +31,40 @@ namespace BulletRushGame
 
             if (aiManager)
             {
-                aiManager.PrepareEnemies();
+                aiManager.CollectEnemiesInScene();
+                aiManager.OnAllEnemiesDie = OpenWinScreen;
+                aiManager.PrepareAndInitEnemies(player.transform);
             }
         }
 
         private void OnPlayerDies()
         {
-            print("death");
+            OpenLoseScreen();
+        }
+
+        public void OpenWinScreen()
+        {
+            Time.timeScale = 0;
+
+            if (winScreen)
+            {
+                winScreen.gameObject.SetActive(true);
+            }
+        }
+        public void OpenLoseScreen()
+        {
+            Time.timeScale = 0;
+
+            if (loseScreen)
+            {
+                loseScreen.gameObject.SetActive(true);
+            }
+        }
+
+        public void ResetLevel()
+        {
+            Time.timeScale = 1;
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         }
     }
 }
