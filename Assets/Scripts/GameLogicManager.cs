@@ -1,18 +1,40 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GameLogicManager : MonoBehaviour
+namespace BulletRushGame
 {
-    // Start is called before the first frame update
-    void Start()
+    
+    public class GameLogicManager : MonoBehaviour
     {
-        
-    }
+        [SerializeField] private Player player;
+        [SerializeField] private AiManager aiManager;
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+        public bool IsGameStarted { get; private set; } = false;
+
+        private void Start()
+        {
+            StartGame();
+        }
+        public void StartGame()
+        {
+            IsGameStarted = true;
+
+            if (player)
+            {
+                player.OnDeath += OnPlayerDies;
+            }
+
+            if (aiManager)
+            {
+                aiManager.PrepareEnemies();
+            }
+        }
+
+        private void OnPlayerDies()
+        {
+            print("death");
+        }
     }
 }
